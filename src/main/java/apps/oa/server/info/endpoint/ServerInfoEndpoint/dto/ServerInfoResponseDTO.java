@@ -21,6 +21,7 @@ public class ServerInfoResponseDTO {
     private double memoryUsageInPercentage;
     private double cpuLoadInPercentage;
     private double diskUsageInPercentage;
+    private double swapMemoryUsageInPercentage;
     private LocalDateTime timestamp;
 
 }

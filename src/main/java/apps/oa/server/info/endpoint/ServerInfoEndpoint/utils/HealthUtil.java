@@ -3,15 +3,13 @@ package apps.oa.server.info.endpoint.ServerInfoEndpoint.utils;
 
 import apps.oa.server.info.endpoint.ServerInfoEndpoint.service.AutoScheduledCheckService;
 import com.sun.management.OperatingSystemMXBean;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import oshi.SystemInfo;
+import oshi.hardware.GlobalMemory;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryMXBean;
-import java.lang.management.MemoryUsage;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +27,21 @@ public class HealthUtil {
     }
 
     public double getMemoryUsage() {
-        MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
-        MemoryUsage heapMemoryUsage = memoryMXBean.getHeapMemoryUsage();
-        long usedMemory = heapMemoryUsage.getUsed();
-        long maxMemory = heapMemoryUsage.getMax();
+        SystemInfo systemInfo = new SystemInfo();
+        GlobalMemory memory = systemInfo.getHardware().getMemory();
+        long totalRAM = memory.getTotal();
+        long usedRAM = totalRAM - memory.getAvailable();
 
-        return (double) usedMemory / maxMemory; // Returns memory usage as a fraction (0.0 to 1.0)
+        return (double) usedRAM / totalRAM; // Returns memory usage as a fraction (0.0 to 1.0)
+    }
+
+    public double getSwapMemoryUsage() {
+        SystemInfo systemInfo = new SystemInfo();
+        GlobalMemory memory = systemInfo.getHardware().getMemory();
+        long totalSwap = memory.getVirtualMemory().getSwapTotal();
+        long usedSwap = memory.getVirtualMemory().getSwapUsed();
+
+        return (double) usedSwap / totalSwap; // Returns swap memory usage as a fraction (0.0 to 1.0)
     }
 
     public double getDiskUsage() {
