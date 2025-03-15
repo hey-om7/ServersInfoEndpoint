@@ -42,6 +42,7 @@ public class ServersInfoServiceImpl implements ServersInfoService {
         serverInfoResponseDTO.setCpuLoadInPercentage(healthUtil.getCpuLoad() * 100);
         serverInfoResponseDTO.setMemoryUsageInPercentage(healthUtil.getMemoryUsage() * 100);
         serverInfoResponseDTO.setDiskUsageInPercentage(healthUtil.getDiskUsage() * 100);
+        serverInfoResponseDTO.setSwapMemoryUsageInPercentage(healthUtil.getSwapMemoryUsage() * 100);
         serverInfoResponseDTO.setUptime(healthUtil.getUptime());
         serverInfoResponseDTO.setExternalServices(new ExternalServices("NA", "NA"));
         serverInfoResponseDTO.setHealthScore(100 -
